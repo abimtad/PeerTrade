@@ -1,0 +1,24 @@
+# Python compiles files
+*.pyc
+*/*.pyc
+*/*/*.pyc
+
+# node.js
+node_modules/
+
+# temporary files
+i*.tmp
+*.bak
+*.old
+*.swp
+
+# Virtual environments
+env/
+
+# sqlite database files
+*.sqlite3
+
+#
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
