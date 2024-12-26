@@ -45,8 +45,8 @@ def signup(request):
 def dashboard(request):
 	items = Item.objects.filter(owner=request.user)
 	
-	return render(request, 'item/dashboard.html', {
-		'item': items,
+	return render(request, 'core/dashboard.html', {
+		'items': items,
 	})
 
 
