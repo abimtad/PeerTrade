@@ -1,3 +1,7 @@
+{% load socialaccount %}
+{% load account %}
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -5,16 +9,41 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{% block title %}{% endblock %} | PeerTrade</title>
 		<script src="https://cdn.tailwindcss.com"></script>
+		{% block script %}{% endblock %}
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<header>
 			<nav class="flex justify-between p-6 items-center border-b">
-				<a href="#" class="font-semibold text-xl text-yellow-500"><span class="before:content-[''] before:absolute before:-left-2 before:-top-1 before:h-6 before:w-6 before:bg-blue-200 before:rounded-lg">.Peer<span class="text-black">Trade</span></span></a>	
+				<a href="/" class="font-semibold text-xl text-yellow-500"><span class="before:content-[''] before:absolute before:-left-2 before:-top-1 before:h-6 before:w-6 before:bg-blue-200 before:rounded-lg">.Peer<span class="text-black">Trade</span></span></a>	
 				<div class="flex justify-between space-x-6 items-center">
-					<a class="text-lg font-semibold hover:text-gray-500" href="#">New Item</a>
-					<a class="text-lg font-semibold hover:text-gray-500" href="#">Browse</a>
-					<a class="bg-[#9AC5E5] hover:text-gray-700 hover:pt-3 text-lg text-white p-4 rounded-xl" href="#">Sign up</a>
-					<a class="bg-[#E5C6C3] hover:text-gray-700 hover:pt-3 text-lg text-white p-4 rounded-xl" href="#">Login</a>
+					<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="#">Browse</a>
+					{% if request.user.is_authenticated %}
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'item:new' %}">New Item</a>
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="">Inbox</a>
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'core:dashboard' %}">Dashboard</a>
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#E5C6C3] p-4 rounded-xl" href="{% url 'account_logout' %}">logout</a>
+
+						{% get_social_accounts user as accounts %}
+
+						{% if accounts %}
+							{% for account in accounts %}
+								{% if user.socialaccount_set.all.0.uid %}
+								<div class="flex flex-col items-center justify-center">
+									<img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="User Avatar" 
+										class="w-10 h-10 rounded-full border-2 border-white">
+									<span class="text-[#9AC5E5]">{% user_display user %}</span>
+								</div>
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							<span><span class="text-green-600">Welcome, </span>{{ user.username }}</span>
+						{% endif %}
+
+					{% else %}
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-teal-600 p-4 rounded-xl" href="{% url 'core:signup' %}">Sign up</a>
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#E5C6C3] p-4 rounded-xl" href="{% url 'core:login' %}">Login</a>
+					{% endif %}
+
 					<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
 						<path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" class="fill-sky-400/20 stroke-sky-500"></path>
 						<path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" class="stroke-sky-500"></path>
@@ -33,20 +62,13 @@
 					<h6 class="mb-3 text-lg text-blue-300">About</h6>
 					<p class="text-gray-400">Lorem, ipsum dollor sit amet consectetur adipisicing <br>elit. Impedit, quidem ipsa corrupti molestias</p>
 				</div>
-				<div>
-					<h6 class="mb-3 text-lg text-blue-300">Categories</h6>
-					<ul class="space-y-3 text-gray-400">
-					<li><a class="hover:text-gray-500" href="#">Clothes</a></li>
-					<li><a class="hover:text-gray-500" href="#">Furniture</a></li>
-					<li><a class="hover:text-gray-500" href="#">Toys</a></li>
-					</ul>
-				</div>
+
 				<div>
 					<h6 class="mb-3 text-lg text-blue-300">Quick links</h6>
 					<ul class="space-y-3 text-gray-400">
-						<li><a class="hover:text-gray-500" href="">Contact</a></li>
-						<li><a class="hover:text-gray-500" href="">About</a></li>
-						<li><a class="hover:text-gray-500" href="">Privacy</a></li>
+						<li><a class="hover:text-gray-500" href="{% url 'core:contact' %}">Contact</a></li>
+						<li><a class="hover:text-gray-500" href="{% url 'core:about' %}">About</a></li>
+						<li><a class="hover:text-gray-500" href="{% url 'core:privacy' %}">Privacy</a></li>
 					</ul>
 				</div>
 			</div>	
@@ -74,6 +96,5 @@
 				</div>
 			</div>
 		</footer>
-		
 	</body>
 </html>

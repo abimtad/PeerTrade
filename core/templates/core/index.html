@@ -1,12 +1,89 @@
 {%  extends 'core/base.html' %}
 
 {% block title %}Home{% endblock %}
+
+{% block script %}
+
+    <script>
+            // Save scroll position before the page unloads
+            window.addEventListener('beforeunload', () => {
+                localStorage.setItem('scrollPosition', window.scrollY);
+            });
+
+            // Restore scroll position after reload
+            window.addEventListener('load', () => {
+                const scrollPosition = localStorage.getItem('scrollPosition');
+                if (scrollPosition) {
+                    window.scrollTo(0, parseInt(scrollPosition, 10));
+                }
+            });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let clothes = document.getElementById('Clothes');
+            let grocery = document.getElementById('Grocery');
+            let tech = document.getElementById('Tech');
+            let hdr = document.getElementById('hdr');
+            let categories = [grocery, clothes, tech];
+            
+            for (let category of categories) {
+                if (category.querySelector('#h2').textContent === hdr.textContent) {
+                    category.classList.add('border-2', 'border-sky-200', 'shadow-md');
+                    break;
+                }
+            }
+
+            categories.forEach(category => {
+                category.addEventListener('click', function(e) {
+                    if (category.classList.contains('border-2')) {
+                        console.log('amin');
+                        e.preventDefault();
+
+                        window.location.href = '/';
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+
+{% endblock %}
+
+
+
 {% block content %}
 	<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-		<h1 class="text-2xl text-center">New Items</h1>
+		<h1 id="hdr" class="mb-12 text-2xl text-center">{{ title }}</h1>
 
-		<div class="grid grid-cols-3 gap-3">
-			
+		<div class="grid gird-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+			{% for item in items %}
+				<div class="border shadow rounded-xl bg-white">
+					<a href="{% url 'item:detail' item.id %}" class="block">
+						<div class="w-full h-68 bg-gray-200 overflow-hidden">
+							<img src="{{ item.image.url }}" alt="{{ image.name }}" class="w-full h-full object-cover">
+						</div>
+						<div class="p-4">
+							<h2 class="text-2xl text-gray-800">{{ item.name }}</h2>
+							<p class="text-gray-600">{{ item.price }}</p>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
 		</div>
 	</div>
+
+	<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+		<h2 class="mb-12 text-2xl text-center">Categories</h2>
+		<div class="grid grid-cols-3 gap-3">
+			{% for category in categories %}
+				<a href="{% url 'core:category' category.id %}" class="p-6 bg-white rounded-b-xl" id="{{ category.name }}">
+					<h2 id="h2" class="text-2xl text-[#E5C6C3]">{{ category.name }}</h2>	
+					<p class="text-gray-500">{{ category.items.count }} items</p>
+				</a>
+			{% endfor %}
+	</div>
+</div>
+
+
+
 {% endblock %}
