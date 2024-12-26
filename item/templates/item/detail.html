@@ -3,6 +3,27 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+		<div class="grid grid-cols-5 gap-6 p-3">
+			<div class="col-span-3">
+				<img src="{{ item.image.url }}" alt="{{ item.name }}" class="rounded-xl">
+			</div>
+
+			<div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+				<h3 class="text-center mb-6">{{ item.name }}</h3>
+				<p><strong>Price:</strong><br>{{ item.price }}</p>
+				<p><strong>Description:</strong><br>{{ item.description }}</p>
+				<p class="mb-4"><strong>Created by:</strong><br>{{ item.owner }}</p>
+				{% if request.user == item.owner %}
+					<p class="mb-5 text-center text-gray-500">This is your item!</p>
+					<div class="w-3/4 flex justify-between m-auto">
+						<button class="text-white bg-teal-500 hover:bg-teal-600 p-4 rounded-xl"><a href="">Edit</a></button>
+						<button class="text-white bg-red-500 hover:bg-red-600 p-4 rounded-xl"><a href="">Delete</a></button>
+					</div>
+				{% else %}
+					<button class="bg-teal-600 p-6 hover:bg-teal-700 text-lg text-white rounded-xl"><a href="">Contact Seller</a></button>
+				{% endif %}
+			</div>
+		</div>
 {% endblock %}
 
 
