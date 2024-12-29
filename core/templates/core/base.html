@@ -9,8 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{% block title %}{% endblock %} | PeerTrade</title>
 		<script src="https://cdn.tailwindcss.com"></script>
-		{% block script %}{% endblock %}
-		{% block css %}{% endblock %}
+		{% block header %}{% endblock %}
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<header>
@@ -20,7 +19,7 @@
 					<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'item:browse' %}">Browse</a>
 					{% if request.user.is_authenticated %}
 						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'item:new' %}">New Item</a>
-						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="">Inbox</a>
+						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'conversation:inbox' %}">Inbox</a>
 						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#9AC5E5] p-4 rounded-xl" href="{% url 'core:dashboard' %}">Dashboard</a>
 						<a class="hover:text-gray-700 hover:pt-3 text-lg text-[#E5C6C3] p-4 rounded-xl" href="{% url 'account_logout' %}">logout</a>
 
@@ -37,7 +36,11 @@
 								{% endif %}
 							{% endfor %}
 						{% else %}
-							<span><span class="text-green-600">Welcome, </span>{{ user.username }}</span>
+							<div class="flex flex-col items-center justify-center">
+								<img src="{{ MEDIA_URL }}default/unknown-user.webp" alt="User Avatar" 
+									class="w-10 h-10 rounded-full border-2 border-white">
+								<span class="text-[#9AC5E5]">{% user_display user %}</span>
+							</div>
 						{% endif %}
 
 					{% else %}
@@ -53,7 +56,7 @@
 			</nav>
 		</header>
 
-		<main class="flex-grow p-4">
+		<main class="flex-grow p-4 flex flex-col">
 				{% block content %}{% endblock %}
 		</main>
 

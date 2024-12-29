@@ -58,16 +58,17 @@ def delete(request, pk):
 
 def browse(request):
 	query = request.GET.get('query', '')
-	items = Item.objects.all()
+	items = Item.objects.filter(is_sold=False)
 	categories = Category.objects.all()
-	category_id = request.GET.get('category', '0')
-
+	category_id = request.GET.get('category', 0)
+	
 	if category_id:
 		if query:
-			items = Item.objects.filter(Q(name__icontains=query) | Q (description__icontains=query), category=category_id)
+			items = Item.objects.filter(Q(name__icontains=query) | Q(description__icontains=query), category=category_id)
 		else:
 			items = Item.objects.filter(category=category_id)
 	else:		
+		print(query)
 		if query:
 			items = Item.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
@@ -75,5 +76,5 @@ def browse(request):
 		'query': query,
 		'items': items,
 		'categories': categories,
-		'category_id': int(category_id),
+		'category_id': category_id,
 	})

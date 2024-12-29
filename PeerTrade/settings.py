@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'allauth.socialaccount.providers.google',
     'core',
     'item',
+    'conversation',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'allauth.account.context_processors.account',  # Correct context processor
+                'django.template.context_processors.media',
 
 
             ],
@@ -143,7 +144,7 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
+LOGIN_URL =  '/login/'
 ACCOUNT_LOGOUT_ON_GET = True
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -154,3 +155,5 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
+
+SOCIALACCOUNT_LOGIN_ON_GET = True

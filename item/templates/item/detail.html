@@ -20,7 +20,7 @@
 						<button class="text-white bg-red-500 hover:bg-red-600 p-4 rounded-xl"><a href="{% url 'item:delete' item.id %}">Delete</a></button>
 					</div>
 				{% else %}
-					<button class="bg-teal-600 p-6 hover:bg-teal-700 text-lg text-white rounded-xl"><a href="">Contact Seller</a></button>
+					<button class="bg-teal-600 p-6 hover:bg-teal-700 text-lg text-white rounded-xl"><a href="{% url 'conversation:newChat' item.id %}">Contact Seller</a></button>
 				{% endif %}
 			</div>
 		</div>

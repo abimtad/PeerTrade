@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+{% load socialaccount %}
+{% block title %}New Chat{% endblock %}
+
+{% block header %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+	<script defer>
+
+		document.addEventListener('DOMContentLoaded', function() {
+			const chatInput = document.getElementById('chatInput');
+			const chatBox = document.getElementById('chatBox');
+			const icon = document.getElementById('fas');
+			const form = document.getElementById('message_form');
+
+			chatInput.addEventListener('focus', function () {
+				chatBox.classList.add('bg-gray-200');
+				chatInput.classList.add('bg-gray-200');
+				icon.classList.add('text-blue-400');
+			});
+
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Enter') {
+					form.submit()
+				}
+			});
+
+			chatInput.addEventListener('blur', function () {
+				chatBox.classList.remove('bg-gray-200');
+				chatInput.classList.remove('bg-gray-200');
+				icon.classList.remove('text-blue-400');
+				// chatBox.classList.add('bg-white');
+			});
+
+			chatInput.addEventListener('keydown', function (e) {
+				if (e.key === 'Enter' && e.shiftKey) {
+					e.preventDefault();
+					chatInput.value += '\n';
+				} else if (e.key === 'Enter') {
+					e.preventDefault();
+					form.submit();
+				}
+			});
+
+			if (chatInput) {
+				chatInput.focus();
+			}
+
+		});
+
+	</script>
+{% endblock %}
+
+{% block content %}
+	<div class="flex flex-col h-full flex-grow">
+		<div class="">
+
+			{% if recipient.socialaccount_set.all.0 %}
+				<div class="flex flex-col items-center justify-center">
+					<img src="{{ recipient.socialaccount_set.all.0.get_avatar_url }}" alt="User Avatar" 
+						class="w-10 h-10 rounded-full border-2 border-white">
+					<span class="text-[#9AC5E5]">{{ recipient.socialaccount_set.all.0 }}</span>
+				</div>
+			{% else %}
+				<div class="flex flex-col items-center justify-center">
+					<img src="{{ MEDIA_URL }}default/unknown-user.webp" alt="User Avatar" 
+						class="w-10 h-10 rounded-full border-2 border-white">
+					<span class="text-[#9AC5E5]">{{ recipient.username }}</span>
+				</div>
+			{% endif %}
+
+		</div>
+
+		<div class="flex-grow">
+			{% block chatBox %}{% endblock %}
+		</div>
+
+		<div>
+			<form action="." method="post" id="message_form">
+				{% csrf_token %}
+				
+				<div id="chatBox" class="flex hover:shadow-md bg-gray-100 items-center px-4 border-2 border-sky-300 justify-center rounded-xl ">{{ form.content }}<span><button type="submit" class=""><i id="fas" class="fas fa-paper-plane"></i></button></span></div>
+			</form>
+		</div>
+	</div>	
+{% endblock %}

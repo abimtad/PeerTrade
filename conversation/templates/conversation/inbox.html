@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+	<div class="grid grid-cols-4 gap-6 h-full flex-grow">
+		<div class="col-span-1 pl-4 py-2 border-r-2">
+			{% for conversation in conversations %}
+				<a href="{% url 'conversation:detail' conversation.id %}">
+					<div class="py-6 pl-6 flex hover:border-r-4" class="">
+						<div class="pr-6">
+							<img src="{{ conversation.item.image.url }}" class="w-20 rounded-xl">
+						</div>
+
+						<div>
+							{% for member in conversation.members.all %}
+								{% if member != request.user %}
+									<p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.updated_at }}</p>
+									<p>{{ conversation.item.name }}</p>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<hr>
+				</a>
+			{% endfor %}
+		</div>
+
+		<div class="col-span-3 text-center flex flex-col items-center justify-center">
+			<div class="font-semibold text-xl">{% if conversation %}Select a chat to start messaging! {% else %}You have no message yet!{% endif %}</div>
+		</div>
+	</div>
+{% endblock %}

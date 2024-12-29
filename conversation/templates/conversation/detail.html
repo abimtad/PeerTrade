@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+{% load socialaccount %}
+{% block title %}Inbox{% endblock %}
+
+{% block header %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+	<script defer>
+
+		document.addEventListener('DOMContentLoaded', function() {
+			const chatInput = document.getElementById('chatInput');
+			const chatBox = document.getElementById('chatBox');
+			const icon = document.getElementById('fas');
+			const form = document.getElementById('message_form');
+
+			chatInput.addEventListener('focus', function () {
+				chatBox.classList.add('bg-gray-200');
+				chatInput.classList.add('bg-gray-200');
+				icon.classList.add('text-blue-400');
+			});
+
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Enter') {
+					form.submit()
+				}
+			});
+
+			chatInput.addEventListener('blur', function () {
+				chatBox.classList.remove('bg-gray-200');
+				chatInput.classList.remove('bg-gray-200');
+				icon.classList.remove('text-blue-400');
+				// chatBox.classList.add('bg-white');
+			});
+
+			chatInput.addEventListener('keydown', function (e) {
+				if (e.key === 'Enter' && e.shiftKey) {
+					e.preventDefault();
+					chatInput.value += '\n';
+				} else if (e.key === 'Enter') {
+					e.preventDefault();
+					form.submit();
+				}
+			});
+
+			if (chatInput) {
+				chatInput.focus();
+			}
+
+		});
+
+	</script>
+{% endblock %}
+
+{% block content %}
+	<div class="grid grid-cols-4 gap-6 h-full flex-grow">
+		<div class="col-span-1 pl-4 py-2 border-r-2 overflow-auto">
+			{% for conversation in conversations %}
+				<a href="{% url 'conversation:detail' conversation.id %}">
+					<div class="py-6 pl-6 flex hover:border-r-4 {% if conversation.id == pk %} bg-gray-200{% endif %}">
+						<div class="pr-6">
+							<img src="{{ conversation.item.image.url }}" class="w-20 rounded-xl">
+						</div>
+
+						<div>
+							{% for member in conversation.members.all %}
+								{% if member != request.user %}
+									<p class="mb-4"><strong>{{ member.username }}</strong> | {{ conversation.updated_at }}</p>
+									<p>{{ conversation.item.name }}</p>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<hr>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="col-span-3">
+			<div class="flex flex-col h-full flex-grow">
+				<div class="">
+
+					{% if recipient.socialaccount_set.all.0 %}
+						<div class="flex flex-col items-center justify-center border-b-2 shadow overflow-hidden pb-3">
+							<img src="{{ recipient.socialaccount_set.all.0.get_avatar_url }}" alt="User Avatar" 
+								class="w-10 h-10 rounded-full border-2 border-white">
+							<span class="text-[#9AC5E5]">{{ recipient.socialaccount_set.all.0 }}</span>
+						</div>
+					{% else %}
+						<div class="flex flex-col items-center justify-center pb-3">
+							<img src="{{ MEDIA_URL }}default/unknown-user.webp" alt="User Avatar" 
+								class="w-10 h-10 rounded-full border-2 border-white">
+							<span class="text-[#9AC5E5]">{{ recipient.username }}</span>
+						</div>
+					{% endif %}
+
+				</div>
+
+				<div class="flex-grow overflow-auto flex flex-col gap-4 fa-align-justify-end">
+					{% block chatBox %}
+						{% for message in messages %}
+							<div class="p-6 flex {% if message.created_by == request.user %}bg-blue-100 self-end{% else %}bg-gray-100 self-start{% endif %} rounded-xl">
+								<div>
+									<p class="mb-4"><strong>{{ message.created_by.username }}</strong> @ {{ message.created_at }}</p>
+									<p>{{ message.content }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					{% endblock %}
+				</div>
+
+				<div>
+					<form action="." method="post" id="message_form">
+						{% csrf_token %}
+						
+						<div id="chatBox" class="flex hover:shadow-md bg-gray-100 items-center px-4 border-2 border-sky-300 justify-center rounded-xl ">{{ form.content }}<span><button type="submit" class=""><i id="fas" class="fas fa-paper-plane"></i></button></span></div>
+					</form>
+				</div>
+			</div>	
+
+		</div>
+	</div>
+{% endblock %}
