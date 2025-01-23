@@ -68,7 +68,6 @@ def browse(request):
 		else:
 			items = Item.objects.filter(category=category_id)
 	else:		
-		print(query)
 		if query:
 			items = Item.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
