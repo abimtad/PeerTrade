@@ -97,6 +97,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 For any inquiries, feel free to reach out:
 
-- **Email**: your-email@example.com
-- **GitHub**: [https://github.com/yourusername](https://github.com/yourusername)
+- **Email**: tadesseabel26@gmai.com
+- **GitHub**: [https://github.com/abimatd](https://github.com/abimatd)
 
