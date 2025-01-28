@@ -2,5 +2,21 @@
 {% extends 'core/base.html' %}
 
 {% block title %}About{% endblock %}
-
-{% block content %}{% endblock %}
+{% block content %}
+ <section id="about-us" class="bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-bold mb-4">About PearTrade</h2>
+    <p class="mb-4">Welcome to PearTrade – a peer-to-peer marketplace connecting buyers and sellers seamlessly.</p>
+    <h3 class="text-lg font-semibold mb-2">Our Mission</h3>
+    <p class="mb-4">To create a secure, user-friendly platform for hassle-free transactions and communication.</p>
+    <h3 class="text-lg font-semibold mb-2">Our Story</h3>
+    <p class="mb-4">Founded in [Year] by [Your Name/Team Name]. Inspired by the need for a modern, efficient peer-to-peer marketplace, we focus on user experience, innovation, and trust.</p>
+    <h3 class="text-lg font-semibold mb-2">Our Features</h3>
+    <ul class="list-disc ml-6">
+      <li>Secure login and user authentication.</li>
+      <li>Intuitive dashboard for managing listings.</li>
+      <li>Real-time messaging between buyers and sellers.</li>
+      <li>Support for a wide range of product categories.</li>
+    </ul>
+    <p class="mt-4">Thank you for choosing PearTrade – we’re excited to help you trade smarter!</p>
+  </section>
+{% endblock %}
