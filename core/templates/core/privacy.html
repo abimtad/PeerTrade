@@ -1,5 +1,25 @@
 {% extends 'core/base.html' %}
 
 {% block title %}Privacy{% endblock %}
-
-{% block content %}{% endblock %}
+{% block content %}
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+	<section id="privacy-policy" class="mb-12 bg-white p-6 rounded-lg shadow-lg">
+		<p class="mb-4">We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use PearTrade.</p>
+		<h3 class="text-lg font-semibold mb-2">Information We Collect</h3>
+		<ul class="list-disc ml-6 mb-4">
+		<li>Personal data (e.g., name, email, phone number) for account creation and transactions.</li>
+		<li>Usage data (e.g., browsing activity, IP address) to improve our services.</li>
+		</ul>
+		<h3 class="text-lg font-semibold mb-2">How We Use Your Information</h3>
+		<ul class="list-disc ml-6 mb-4">
+		<li>To manage your account.</li>
+		<li>To process transactions securely.</li>
+		<li>To communicate updates or resolve issues.</li>
+		</ul>
+		<h3 class="text-lg font-semibold mb-2">Data Sharing and Security</h3>
+		<p class="mb-4">We do not sell or share your data with third parties. We take measures to ensure data security, such as encryption and secure servers.</p>
+		<h3 class="text-lg font-semibold mb-2">Your Rights</h3>
+		<p>You can access, correct, or delete your data by contacting us at <a href="mailto:privacy@peartrade.com" class="text-green-600 underline">privacy@peartrade.com</a>.</p>
+	</section>
+</div>
+{% endblock %}
